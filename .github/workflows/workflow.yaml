@@ -22,6 +22,7 @@ jobs:
 
     - run: |
         helm template . -s templates/prometheusrule.yaml | yq .spec > ${GITHUB_WORKSPACE}/promtool-rules.yaml
+        ls -ltr ${GITHUB_WORKSPACE}
       working-directory: helm
 
     - name: Check Prometheus alert rules
