@@ -17,7 +17,7 @@ jobs:
 
     - uses: alexellis/arkade-get@master
       with:
-        helm: 3.9.2
+        helm: 3.10.1
         yq: 4.27.5
 
     - run: helm template . -s templates/prometheusrule.yaml | yq .spec > ${GITHUB_WORKSPACE}/promtool-rules.yaml
