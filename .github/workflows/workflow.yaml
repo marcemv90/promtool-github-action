@@ -13,10 +13,12 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@master
 
+    - uses: alexellis/setup-arkade@v1
+
     - uses: alexellis/arkade-get@master
       with:
-        helm: latest
-        yq: latest
+        helm: 3.9.2
+        yq: 4.27.5
 
     - run: helm template . -s templates/prometheusrule.yaml | yq .spec > ${GITHUB_WORKSPACE}/promtool-rules.yaml
       working-directory: helm
