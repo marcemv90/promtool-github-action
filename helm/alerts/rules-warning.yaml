@@ -1,6 +1,6 @@
 rules:
 - alert: HighRequestLatency
-  expr: job:request_latency_seconds:mean5m{job="myjob"} > 0.5
+  expr: job:request_latency_seconds:mean5mjob="myjob"} > 0.5
   for: 10m
   labels:
     severity: page
