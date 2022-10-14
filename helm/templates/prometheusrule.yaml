@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: {{ .Release.Namespace }}
+  annotations:
+  labels:
+    release: prometheus
+  name: my-service
+spec:
+  groups:
+  {{- range $path, $bytes := .Files.Glob "alerts/*.yaml" }}
+  - name: {{ base $path }}
+    {{- $.Files.Get $path | nindent 4 }}
+  {{- end }}

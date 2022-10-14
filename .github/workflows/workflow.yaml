@@ -1,0 +1,32 @@
+name: Check Prometheus Alert rules
+
+on:
+  pull_request:
+    paths:
+    - 'helm/**'
+
+jobs:
+  on-pull-request:
+    name: On Pull Request
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@master
+
+    - uses: alexellis/arkade-get@master
+      with:
+        helm: 3.9.2
+        yq: latest
+
+    - run: helm template . -s templates/prometheusrule.yaml | yq .spec > ${GITHUB_WORKSPACE}/promtool-rules.yaml
+      working-directory: helm
+
+    - name: Check Prometheus alert rules
+      uses: peimanja/promtool-github-actions@master
+      with:
+        promtool_actions_subcommand: 'rules'
+        promtool_actions_files: 'promtool-rules.yml'
+        promtool_actions_version: '2.14.0'
+        promtool_actions_comment: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
